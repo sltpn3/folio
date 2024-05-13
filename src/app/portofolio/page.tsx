@@ -15,26 +15,43 @@ const metadata: Metadata = {
     description: "Portfolio Aditya Pradana",
 };
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 function TypedEffect() {
-    const skills = ['Web Developer', 'Backend Programmer']
+    const skills = ['Backend Programmer', 'Python', 'Django', 'FastAPI']
     const [letterPos, setLetterPos] = useState(0);
     const [skillPos, setSkillPos] = useState(0);
+    const [wait, setWait] = useState(0);
     let skill = skills[skillPos]
     const [text, setText] = useState(skill[0]);
+    let x = 0
     useEffect(
         function () {
             setTimeout(function () {
-                setLetterPos(letterPos + 1);
-            }, 250);
-            if (letterPos > skill.length) {
-                setLetterPos(0)
-                if (skillPos + 1 <= skills.length-1) {
-                    setSkillPos(skillPos + 1)
+                if (wait == 0) {
+                    setLetterPos(letterPos + 1);
+                    if (letterPos == skill.length) {
+                        setWait(5)
+                    } else if (letterPos > skill.length) {
+                        //move skill
+                        setLetterPos(0)
+                        if (skillPos + 1 <= skills.length - 1) {
+                            setSkillPos(skillPos + 1)
+                        } else {
+                            setSkillPos(0)
+                        }
+                    }
                 } else {
-                    setSkillPos(0)
+                    setWait(wait - 1)
                 }
-            }
-            setText(skill.slice(0, letterPos))
+                // if (wait > 0) {
+                setText(skill.slice(0, letterPos))
+                //     setWait(wait-1)
+                // }
+            }, 200);
+            // setTimeout(function () {setText(skill.slice(0, letterPos))},2000)
+
+
         }
     )
     // useEffect(
